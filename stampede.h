@@ -10,25 +10,15 @@
 
 #include "Arduino.h"
 #include <servo.h>
-class StepperMotor {
-public:
-    StepperMotor(int In1, int In2, int In3, int In4);    // Constructor that will set the inputs
-    void setStepDuration(int duration);    // Function used to set the step duration in ms
-    void step(int noOfSteps);    // Step a certain number of steps. + for one way and - for the other
-	void degree(int noOfDeg);
-    int duration;    // Step duration in ms
-    int inputPins[4];    // The input pin numbers
-};
-
+#include "stepper.h"
 class arm {
-public:
+  public:
     int i;
-    arm();
+    arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5);
     void setupfingers();
     void fingerattach(int finger1pin, int finger2pin, int finger3pin, int finger4pin, int finger5pin);
-    void setupmotors();
     void fingermove(int finger, int fingermovevalue);
-	void wiggle(int fingermovevalue);
+    void wiggle(int fingermovevalue);
     int finger1pos;
     int finger2pos;
     int finger3pos;
@@ -39,21 +29,25 @@ public:
     Servo finger3;
     Servo finger4;
     Servo finger5;
-	//Bluetooth
-	HardwareSerial bt = HardwareSerial();
-	//Serial Input/Output Variables
-	static const int numChars = 32;
-	char receivedChars[numChars];
-	char tempChars[numChars];// temporary array for use when parsing
-	char messageForArm[numChars] = {0};
-	int intForArm = 0.0;
-	boolean newData = false;
-	String messageForArmStr;
-	void btsetup();
-	void btloop();
-	void btrecvWithStartEndMarkers();
-	void btparseData();
-	void btshowParsedData();
-  StepperMotor motor = StepperMotor(32,31,30,29);
+    //Bluetooth
+    HardwareSerial bt = HardwareSerial();
+    //Serial Input/Output Variables
+    static const int numChars = 32;
+    char receivedChars[numChars];
+    char tempChars[numChars];// temporary array for use when parsing
+    char messageForArm[numChars] = {0};
+    int intForArm = 0.0;
+    boolean newData = false;
+    String messageForArmStr;
+    void btsetup();
+    void btloop();
+    void btrecvWithStartEndMarkers();
+    void btparseData();
+    void btshowParsedData();
+    StepperMotor* motor1;
+    StepperMotor* motor2;
+    StepperMotor* motor3;
+    StepperMotor* motor4;
+    StepperMotor* motor5;
 };
 #endif
