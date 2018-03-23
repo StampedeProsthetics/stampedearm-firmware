@@ -1,3 +1,5 @@
+
+
 /*
   stampede.cpp - Library for The Stampede Arm prosthetic arm.
   Created by Chase Cromwell, Fall 2017.
@@ -9,12 +11,14 @@
 #define arm_h
 
 #include "Arduino.h"
+#include <SoftwareSerial.h>
 #include <servo.h>
 #include "stepper.h"
+
 class arm {
   public:
     int i;
-    arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5);
+    arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
     void setupfingers();
     void fingerattach(int finger1pin, int finger2pin, int finger3pin, int finger4pin, int finger5pin);
     void fingermove(int finger, int fingermovevalue);
@@ -30,7 +34,7 @@ class arm {
     Servo finger4;
     Servo finger5;
     //Bluetooth
-    HardwareSerial bt = HardwareSerial();
+    #define bt Serial1
     //Serial Input/Output Variables
     static const int numChars = 32;
     char receivedChars[numChars];
@@ -39,11 +43,14 @@ class arm {
     int intForArm = 0.0;
     boolean newData = false;
     String messageForArmStr;
+    void batloop();
     void btsetup();
     void btloop();
     void btrecvWithStartEndMarkers();
     void btparseData();
     void btshowParsedData();
+    boolean enableFeedback;
+    void feedback(int intForArm, String messageForArmStr);
     StepperMotor* motor1;
     StepperMotor* motor2;
     StepperMotor* motor3;

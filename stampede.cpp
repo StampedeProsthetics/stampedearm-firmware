@@ -5,19 +5,22 @@
 */
 
 #include "Arduino.h"
+#include <SoftwareSerial.h>
 #include <Servo.h>
 #include "stampede.h"
 #include "stepper.h"
 // Constructor
-arm::arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5)
+arm::arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin)
 {
   motor1 = new StepperMotor(pins1[0], pins1[1], pins1[2], pins1[3]);
   motor2 = new StepperMotor(pins2[0], pins2[1], pins2[2], pins2[3]);
   motor3 = new StepperMotor(pins3[0], pins3[1], pins3[2], pins3[3]);
   motor4 = new StepperMotor(pins4[0], pins4[1], pins4[2], pins4[3]);
   motor5 = new StepperMotor(pins5[0], pins5[1], pins5[2], pins5[3]);
+  enableFeedback = enableFeedbackin;
 
 }
+// Initalize Servo Objects
 void arm::setupfingers()
 {
   Servo finger1;
@@ -26,6 +29,7 @@ void arm::setupfingers()
   Servo finger4;
   Servo finger5;
 }
+// Attach Servo Objects to Corresponding Pins
 void arm::fingerattach(int finger1pin, int finger2pin, int finger3pin, int finger4pin, int finger5pin)
 {
   finger1.attach(finger1pin);
@@ -34,13 +38,16 @@ void arm::fingerattach(int finger1pin, int finger2pin, int finger3pin, int finge
   finger4.attach(finger4pin);
   finger5.attach(finger5pin);
 }
-
+// Move finger x by x degrees and back to the starting point
+// Switch/Case loop run to determine finger to move.
+// The whole setup for the servos and then looping to select the right one is probably inefficent and could be optimized, but it works for now.
 void arm::fingermove(int finger, int fingermovevalue)
 {
 
   int i = 0;
   switch (finger) {
     case 1:
+      // The pair of for loops moves the finger to the instructed value and back, smoothly
       for (i = 0; i <= fingermovevalue; i += 1) {
         finger1.write(i);
         delay(15);
@@ -92,6 +99,11 @@ void arm::fingermove(int finger, int fingermovevalue)
       break;
   }
 }
+
+// "Preset" finger function for demonstrations
+// Servos can only be moved one at a time so,
+// This function moves finger1 a degree, then finger2 a degree etc and loops until they're at the instructed value.
+// Then the whole thing is run again backwards
 void arm::wiggle(int fingermovevalue)
 {
   int i = 0;
@@ -113,30 +125,62 @@ void arm::wiggle(int fingermovevalue)
   }
 }
 /* This point forward is all bluetooth and command parsing code. Do NOT put actual servo.write style commands beyond this line */
-
+// Begin the serial for the bluetooth and send initalization info. (This is where one time diagnostic info to be sent at startup should be.
 void arm::btsetup() {
-  bt.begin(115200);
+  //bt.begin(115200);
+  bt.begin(57600);
   bt.println("This demo expects 2 pieces of data - text, and a int decimal");
   bt.println("Enter data in this style <HelloWorld, 24.7>  ");
   bt.println();
 }
 
-//============
+// Battery Testing Code
+// Simply loops all motors back and forth until power cuts out.
+void arm::batloop() {
+    int i = 0;
+  for (i = 0; i <= 180; i += 5) {
+    finger1.write(i);
+    finger2.write(i);
+    finger3.write(i);
+    finger4.write(i);
+    finger5.write(i);
+        motor1->movedegree(i);
+    motor2->movedegree(i);
+    motor3->movedegree(i);
+    motor4->movedegree(i);
+    motor5->movedegree(i);
+    delay(15);
+  }
+  for (i = 180; i >= 0; i -= 5) {
+    finger1.write(i);
+    finger2.write(i);
+    finger3.write(i);
+    finger4.write(i);
+    finger5.write(i);
+        motor1->movedegree(i);
+    motor2->movedegree(i);
+    motor3->movedegree(i);
+    motor4->movedegree(i);
+    motor5->movedegree(i);
+    delay(15);
+  }
+}
 
+// Bluetooth Code for the Loop
+// Recieves Info, parses info if its new, and then sets newinfo = false
 void arm::btloop() {
   btrecvWithStartEndMarkers();
   if (newData == true) {
     strcpy(tempChars, receivedChars);
-    //this temporary copy is necessary to protect the original data
-    //because strtok() used in parseData() replaces the commas with \0
+    // this temporary copy is necessary to protect the original data
+    // because strtok() used in parseData() replaces the commas with \0
     btparseData();
     btshowParsedData();
     newData = false;
   }
 }
 
-//============
-
+// Heart of the signal loop. Recieves data and marks segments
 void arm::btrecvWithStartEndMarkers() {
   static boolean recvInProgress = false;
   static byte ndx = 0;
@@ -169,8 +213,7 @@ void arm::btrecvWithStartEndMarkers() {
   }
 }
 
-//============
-
+// Spinal Cord of Signal Loop. Separates components of input into separate variables.
 void arm::btparseData() {      // split the data into its parts
 
   char * strtokIndx; // this is used by strtok() as an index
@@ -183,8 +226,19 @@ void arm::btparseData() {      // split the data into its parts
 
 }
 
-//============
+// Sends response data on the latest movement if feedback is enabled in setup. (Debug tool)
+void arm::feedback(int intForArm, String messageForArm) {
+  if (enableFeedback) {
+    bt.print("The message was '");
+    bt.print(messageForArm);
+    bt.print("' and the int was '");
+    bt.print(intForArm);
+    bt.println("'");
+  } else {
+  }
+}
 
+// Brain of the Signal Loop. Takes separated values and decides what to do with them.
 void arm::btshowParsedData() {
   messageForArmStr = String(messageForArm);
   if (intForArm == 1234.56) {
@@ -193,73 +247,32 @@ void arm::btshowParsedData() {
     bt.println("Enter data in this style <HelloWorld, 24.7>  ");
     bt.println();
   } else if (messageForArmStr == "this") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
-  } else if (messageForArmStr == "finger1") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+  } else if (messageForArmStr == "f1") {
+    feedback(intForArm, messageForArm);
     fingermove(1, intForArm);
-  } else if (messageForArmStr == "finger2") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+  } else if (messageForArmStr == "f2") {
+    feedback(intForArm, messageForArm);
     fingermove(2, intForArm);
-  } else if (messageForArmStr == "finger3") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+  } else if (messageForArmStr == "f3") {
+    feedback(intForArm, messageForArm);
     fingermove(3, intForArm);
-  } else if (messageForArmStr == "finger4") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+  } else if (messageForArmStr == "f4") {
+    feedback(intForArm, messageForArm);
     fingermove(4, intForArm);
-  } else if (messageForArmStr == "finger5") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+  } else if (messageForArmStr == "f5") {
+    feedback(intForArm, messageForArm);
     fingermove(5, intForArm);
   } else if (messageForArmStr == "wiggle") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+    feedback(intForArm, messageForArm);
     wiggle(180);
   } else if (messageForArmStr == "stepper1") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+    feedback(intForArm, messageForArm);
     motor1->movedegree(intForArm);
   } else if (messageForArmStr == "stepper2") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+    feedback(intForArm, messageForArm);
     motor2->movedegree(intForArm);
   } else if (messageForArmStr == "steppers") {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+    feedback(intForArm, messageForArm);
     motor1->movedegree(intForArm);
     motor2->movedegree(intForArm);
   }
