@@ -10,6 +10,7 @@ before_install:
   - sudo wget https://www.pjrc.com/teensy/td_141/TeensyduinoInstall.linux64
   - sudo wget https://www.pjrc.com/teensy/49-teensy.rules
   - sudo cp 49-teensy.rules /etc/udev/rules.d
+  - sudo chmod 777 TeensyduinoInstall.linux64
   - sudo ./TeensyduinoInstall.linux64
   - ln -s /usr/share/arduino/arduino-1.6.5/arduino /usr/bin/arduino-1.6.5
 install:
