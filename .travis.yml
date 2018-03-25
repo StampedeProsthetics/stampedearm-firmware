@@ -10,7 +10,7 @@ before_install:
   - ls /usr/local/share/arduino/hardware
 install:
 script:
-  - arduino --verbose-build --verify $PWD/stampedearm-firmware.ino
+  - arduino --verbose-build --board arduino:avr:mega:cpu=atmega2560 --verify $PWD/stampedearm-firmware.ino
 notifications:
   email:
     on_success: change
