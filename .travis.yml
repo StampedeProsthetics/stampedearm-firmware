@@ -17,7 +17,7 @@ before_install:
   - ls /usr/local/share/arduino/hardware
 install:
 script:
-  - arduino --verify --board teensy:avr:teensy35 $PWD/stampedearm-firmware.ino
+  - arduino --verbose-build --verify --board teensy:avr:teensy35 $PWD/stampedearm-firmware.ino
 notifications:
   email:
     on_success: change
