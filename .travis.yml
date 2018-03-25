@@ -11,10 +11,10 @@ before_install:
   - sudo wget https://www.pjrc.com/teensy/49-teensy.rules
   - sudo cp 49-teensy.rules /etc/udev/rules.d
   - sudo chmod 777 TeensyduinoInstall.linux64
+  - sudo apt-get install libusb-dev
+  - git clone https://github.com/PaulStoffregen/teensy_loader_cli.git
   - ls
-  - ls /usr/local/share/arduino
-  - ls /usr/local/share/arduino/arduino-1.6.5
-  - ls /usr/local/share/arduino/arduino
+  - ls /usr/local/share/arduino/hardware 
   - sudo ./TeensyduinoInstall.linux64
   - ln -s /usr/share/arduino/arduino-1.6.5/arduino /usr/bin/arduino-1.6.5
 install:
