@@ -1,0 +1,21 @@
+language: c
+before_install:
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
+  - sleep 3
+  - export DISPLAY=:1.0
+  - wget http://downloads.arduino.cc/arduino-1.6.5-linux64.tar.xz
+  - tar xf arduino-1.6.5-linux64.tar.xz
+  - sudo mv arduino-1.6.5 /usr/local/share/arduino
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - sudo wget https://www.pjrc.com/teensy/td_141/TeensyduinoInstall.linux64
+  - sudo wget https://www.pjrc.com/teensy/49-teensy.rules
+  - sudo cp 49-teensy.rules /etc/udev/rules.d
+  - sudo ./TeensyduinoInstall.linux64
+  - ln -s /usr/share/arduino/arduino-1.6.5/arduino /usr/bin/arduino-1.6.5
+install:
+script:
+  - arduino --verify --board teensy:avr:teensy35 $PWD/stampedearm-firmware.ino
+notifications:
+  email:
+    on_success: change
+    on_failure: change
