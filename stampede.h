@@ -1,8 +1,7 @@
-
-
 /*
-  stampede.cpp - Library for The Stampede Arm prosthetic arm.
-  Created by Chase Cromwell, Fall 2017.
+  stampede.h - Library for The Stampede Arm prosthetic arm.
+  Created by Chase Cromwell, (c) Fall 2016-18.
+  All Rights Reserved
   thestampedearm.org
 */
 

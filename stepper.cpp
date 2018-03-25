@@ -1,3 +1,10 @@
+/*
+  stepper.cpp - Library for The Stampede Arm prosthetic arm.
+  Created by Chase Cromwell, (C) Fall 2016-18.
+  All Rights Reserved
+  thestampedearm.org
+*/
+
 #include <Arduino.h>
 #include "stepper.h"
 
@@ -61,4 +68,3 @@ void StepperMotor::movedegree(int deg)
 {
   stepoff((deg * 4096) / 360);
 }
-
