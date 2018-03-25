@@ -13,8 +13,8 @@ before_install:
   - sudo chmod 777 TeensyduinoInstall.linux64
   - sudo apt-get install libusb-dev
   - git clone https://github.com/PaulStoffregen/teensy_loader_cli.git
-  - ls
-  - ls /usr/local/share/arduino/hardware 
+  - make -C teensy_loader_cli/
+  - ls /usr/local/share/arduino/hardware
   - sudo ./TeensyduinoInstall.linux64
   - ln -s /usr/share/arduino/arduino-1.6.5/arduino /usr/bin/arduino-1.6.5
 install:
