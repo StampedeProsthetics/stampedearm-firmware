@@ -1,3 +1,10 @@
+/*
+  stampedearm-firmware.ino - Library for The Stampede Arm prosthetic arm.
+  Created by Chase Cromwell, (C) Fall 2016-18.
+  All Rights Reserved
+  thestampedearm.org
+*/
+
 #include <Servo.h>
 #include <SoftwareSerial.h>
 #include "stepper.h"
@@ -21,4 +28,4 @@ void loop()
 {
   stampede.btloop();
   //stampede.batloop();
-}  
+}

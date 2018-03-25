@@ -1,3 +1,10 @@
+/*
+  stepper.h - Library for The Stampede Arm prosthetic arm.
+  Created by Chase Cromwell, (C) Fall 2016-18.
+  All Rights Reserved
+  thestampedearm.org
+*/
+
 #ifndef Stepper_h
 #define Stepper_h
 
