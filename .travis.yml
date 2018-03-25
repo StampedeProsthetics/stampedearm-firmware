@@ -12,9 +12,9 @@ before_install:
   - sudo cp 49-teensy.rules /etc/udev/rules.d
   - sudo chmod 777 TeensyduinoInstall.linux64
   - ls
-  - ls /usr/share/arduino
-  - ls /usr/share/arduino/arduino-1.6.5
-  - ls /usr/share/arduino/arduino
+  - ls /usr/local/share/arduino
+  - ls /usr/local/share/arduino/arduino-1.6.5
+  - ls /usr/local/share/arduino/arduino
   - sudo ./TeensyduinoInstall.linux64
   - ln -s /usr/share/arduino/arduino-1.6.5/arduino /usr/bin/arduino-1.6.5
 install:
