@@ -1,3 +1,2 @@
-# The Stampede Arm - $350 Prosthetic Arm
-This repo contains all the code you need to run your own Stampede Arm.
-__New to the project?__ Check out all the docs and photos over at [thestampedearm.org]
+# The Stampede Arm - $350 Prosthetic Arm [![Build Status](https://travis-ci.com/stampede-arm/stampedearm-firmware.svg?token=kepkq3uqvdJAKrReq7Ju&branch=master)](https://travis-ci.com/stampede-arm/stampedearm-firmware)
+This repo contains all the code you need to run the Stampede Arm.

@@ -11,7 +11,7 @@
 
 #include "Arduino.h"
 #include <SoftwareSerial.h>
-#include <servo.h>
+#include <Servo.h>
 #include "stepper.h"
 
 class arm {
