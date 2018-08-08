@@ -5,6 +5,7 @@
   thestampedearm.org
 */
 
+#include <Arduino.h>
 #include <Servo.h>
 #include <SoftwareSerial.h>
 #include "stepper.h"
