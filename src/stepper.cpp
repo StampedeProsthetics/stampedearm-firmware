@@ -1,6 +1,6 @@
 /*
   stepper.cpp - Library for The Stampede Arm prosthetic arm.
-  Created by Chase Cromwell, (C) Fall 2016-18.
+  Created by Chase Cromwell, (C) 2016-18.
   All Rights Reserved
   thestampedearm.org
 */
