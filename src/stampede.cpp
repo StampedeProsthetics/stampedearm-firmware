@@ -20,7 +20,7 @@ arm::arm(int board, int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, 
   motor4 = new StepperMotor(pins4[0], pins4[1], pins4[2], pins4[3]);
   motor5 = new StepperMotor(pins5[0], pins5[1], pins5[2], pins5[3]);
   enableFeedback = enableFeedbackin;
-  board = board;
+  //board = board;
 
 }
 // Initalize Servo Objects

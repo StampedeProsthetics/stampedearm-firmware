@@ -15,7 +15,7 @@ int stepper2[] = {28, 27, 26, 25};
 int stepper3[] = {11, 10, 9, 8};
 int stepper4[] = {14, 15, 16, 17};
 int stepper5[] = {18, 19, 20, 21};
-arm stampede = arm(stepper1, stepper2, stepper3, stepper4, stepper5, true);
+arm stampede = arm(stepper1, stepper2, stepper3, stepper4, stepper5);
 
 void setup()
 {
