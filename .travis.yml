@@ -67,6 +67,8 @@
 #     - platformio ci --lib="." --board=ID_1 --board=ID_2 --board=ID_N
 
 language: python
+cache: pip
+
 python:
     - "2.7"
 

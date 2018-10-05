@@ -16,6 +16,9 @@
 
 class arm {
   public:
+	String version = "v0.0.0.1";
+	String updated = "1 October 2018";
+	int board;
     int i;
     arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
     void setupfingers();
@@ -48,12 +51,16 @@ class arm {
     void btrecvWithStartEndMarkers();
     void btparseData();
     void btshowParsedData();
+    void report(String request);
     boolean enableFeedback;
-    void feedback(int intForArm, String messageForArmStr);
+    void feedback(String messageForArmStr, int intForArm);
     StepperMotor* motor1;
     StepperMotor* motor2;
     StepperMotor* motor3;
     StepperMotor* motor4;
     StepperMotor* motor5;
+	void getBoard(int bt);
+	void report(String request);
+
 };
 #endif

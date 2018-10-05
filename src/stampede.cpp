@@ -1,4 +1,4 @@
-/*
+S/*
   stampede.cpp - Library for The Stampede Arm prosthetic arm.
   Created by Chase Cromwell, (C) 2016-18.
   All Rights Reserved
@@ -12,7 +12,7 @@
 #include "stampede.h"
 #include "stepper.h"
 // Constructor
-arm::arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin)
+arm::arm(int board, int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin)
 {
   motor1 = new StepperMotor(pins1[0], pins1[1], pins1[2], pins1[3]);
   motor2 = new StepperMotor(pins2[0], pins2[1], pins2[2], pins2[3]);
@@ -20,6 +20,7 @@ arm::arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean ena
   motor4 = new StepperMotor(pins4[0], pins4[1], pins4[2], pins4[3]);
   motor5 = new StepperMotor(pins5[0], pins5[1], pins5[2], pins5[3]);
   enableFeedback = enableFeedbackin;
+  board = board;
 
 }
 // Initalize Servo Objects
@@ -229,14 +230,19 @@ void arm::btparseData() {      // split the data into its parts
 }
 
 // Sends response data on the latest movement if feedback is enabled in setup. (Debug tool)
-void arm::feedback(int intForArm, String messageForArm) {
+void arm::feedback(String messageForArm, int intForArm = 0) {
   if (enableFeedback) {
-    bt.print("The message was '");
-    bt.print(messageForArm);
-    bt.print("' and the int was '");
-    bt.print(intForArm);
-    bt.println("'");
+    if (intForArm !== 0){
+      bt.print("The message was '");
+      bt.print(messageForArm);
+      bt.print("' and the int was '");
+      bt.print(intForArm);
+      bt.println("'");
+    } else {
+      bt.print(messageForArm);
+    }
   } else {
+    //Feedback disabled
   }
 }
 
@@ -261,32 +267,69 @@ void arm::btshowParsedData() {
     bt.println();
   } else if (messageForArmStr == "this") {
   } else if (messageForArmStr == "f1") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     fingermove(1, intForArm);
   } else if (messageForArmStr == "f2") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     fingermove(2, intForArm);
   } else if (messageForArmStr == "f3") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     fingermove(3, intForArm);
   } else if (messageForArmStr == "f4") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     fingermove(4, intForArm);
   } else if (messageForArmStr == "f5") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     fingermove(5, intForArm);
   } else if (messageForArmStr == "wiggle") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     wiggle(180);
   } else if (messageForArmStr == "stepper1") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     motor1->movedegree(intForArm);
   } else if (messageForArmStr == "stepper2") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     motor2->movedegree(intForArm);
   } else if (messageForArmStr == "steppers") {
-    feedback(intForArm, messageForArm);
+    feedback(messageForArm, intForArm);
     motor1->movedegree(intForArm);
     motor2->movedegree(intForArm);
   }
+}
+
+void arm::getBoard(int bt = 0) {
+	 switch (board) {
+    case 3:
+      board = "Teensy 3.5";
+		boardBt = "true";
+	 }
+	 }
+void arm::report(String request) {
+  request = toLowerCase(request);
+  if (request == "battery"){
+    //feedback("Battery Status is at: " + "*testing value*");
+  } else if (request == ""){
+    feedback("There was no request payload!");
+  } else if (request == "version"){
+    feedback("The current Stampede Arm Firmware Version is: " + version);
+	feedback("Last update was " + updated);
+	feedback("(c) 2018 Chase Cromwell");
+  } else if (request == "uptime"){
+	  //Possible use of some sort of clock to update?
+  } else if (request == "settings"){
+    getBoard();
+	  //Print out detailed settings list
+	  //Values of config settings, pin numberings, etc etc
+	  feedback("Version:" + version);
+	  feedback("This version was last updated: " + updated);
+	  feedback("This board was compiled for the " + getBoard() + "board");
+	  feedback("This board is fully supported: " + getBoard(1));
+	  feedback("This board has bluetooth enabled: " + getBoard(1));
+	  feedback("Uptime is: "."*testing*");
+	  feedback("Feedback enabled: " + enableFeedback);
+	  feedback("(c) 2018 Chase Cromwell");
+
+  }
+
+
 }
