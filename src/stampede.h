@@ -16,10 +16,6 @@
 
 class arm {
   public:
-	String version = "v0.0.0.1";
-	String updated = "1 October 2018";
-	String board = "Teensy 3.5";
-	String boardBt = "true";
     int i;
     arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
     void setupfingers();
@@ -59,6 +55,10 @@ class arm {
     StepperMotor* motor3;
     StepperMotor* motor4;
     StepperMotor* motor5;
+	String version = "v0.0.0.1";
+	String updated = "1 October 2018";
+	String board = "Teensy 3.5";
+	String boardBt = "true";
 	String requestinput;
 	String request;
 	void report(String requestinput);
