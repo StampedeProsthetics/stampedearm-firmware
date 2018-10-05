@@ -297,13 +297,6 @@ void arm::btshowParsedData() {
   }
 }
 
-void arm::getBoard(int bt = 0) {
-	 switch (board) {
-    case 3:
-      board = "Teensy 3.5";
-		boardBt = "true";
-	 }
-	 }
 void arm::report(String requestinput) {
   request = toLowerCase(requestinput);
   if (request == "battery"){
@@ -317,16 +310,15 @@ void arm::report(String requestinput) {
   } else if (request == "uptime"){
 	  //Possible use of some sort of clock to update?
   } else if (request == "settings"){
-    getBoard();
 	  //Print out detailed settings list
 	  //Values of config settings, pin numberings, etc etc
-	  feedback("Version:" + version);
-	  feedback("This version was last updated: " + updated);
-	  feedback("This board was compiled for the " + getBoard() + "board");
-	  feedback("This board is fully supported: " + getBoard(1));
-	  feedback("This board has bluetooth enabled: " + getBoard(1));
+	  feedback(("Version:" + version));
+	  feedback(("This version was last updated: " + updated));
+	  feedback(("This board was compiled for the " + board + "board"));
+	  feedback(("This board is fully supported: " + boardBt));
+	  feedback(("This board has bluetooth enabled: " + boardBt));
 	  feedback("Uptime is: "."*testing*");
-	  feedback("Feedback enabled: " + enableFeedback);
+	  feedback(("Feedback enabled: " + enableFeedback));
 	  feedback("(c) 2018 Chase Cromwell");
 
   }
