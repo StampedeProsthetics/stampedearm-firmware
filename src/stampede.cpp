@@ -304,8 +304,8 @@ void arm::getBoard(int bt = 0) {
 		boardBt = "true";
 	 }
 	 }
-void arm::report(String request) {
-  request = toLowerCase(request);
+void arm::report(String requestinput) {
+  request = toLowerCase(requestinput);
   if (request == "battery"){
     //feedback("Battery Status is at: " + "*testing value*");
   } else if (request == ""){

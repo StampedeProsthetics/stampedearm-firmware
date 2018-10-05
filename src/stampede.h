@@ -60,7 +60,9 @@ class arm {
     StepperMotor* motor4;
     StepperMotor* motor5;
 	void getBoard(int bt);
-	void report(String request);
+	String requestinput;
+	String request;
+	void report(String requestinput);
 
 };
 #endif
