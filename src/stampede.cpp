@@ -232,7 +232,7 @@ void arm::btparseData() {      // split the data into its parts
 // Sends response data on the latest movement if feedback is enabled in setup. (Debug tool)
 void arm::feedback(String messageForArm, int intForArm = 0) {
   if (enableFeedback) {
-    if (intForArm !== 0){
+    if (intForArm != 0){
       bt.print("The message was '");
       bt.print(messageForArm);
       bt.print("' and the int was '");
@@ -298,7 +298,7 @@ void arm::btshowParsedData() {
 }
 
 void arm::report(String requestinput) {
-  request = toLowerCase(requestinput);
+  request = requestinput.toLowerCase();
   if (request == "battery"){
     //feedback("Battery Status is at: " + "*testing value*");
   } else if (request == ""){

@@ -20,7 +20,6 @@ class arm {
 	String updated = "1 October 2018";
 	String board = "Teensy 3.5";
 	String boardBt = "true";
-	int board;
     int i;
     arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
     void setupfingers();
