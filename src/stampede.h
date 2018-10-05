@@ -16,9 +16,9 @@
 
 class arm {
   public:
-    int i;
     arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
-    void setupfingers();
+    int i;
+	void setupfingers();
     void fingerattach(int finger1pin, int finger2pin, int finger3pin, int finger4pin, int finger5pin);
     void fingermove(int finger, int fingermovevalue);
     void wiggle(int fingermovevalue);
