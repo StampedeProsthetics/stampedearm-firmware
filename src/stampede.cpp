@@ -317,7 +317,7 @@ void arm::report(String requestinput) {
 	  feedback(("This board was compiled for the " + board + "board"));
 	  feedback(("This board is fully supported: " + boardBt));
 	  feedback(("This board has bluetooth enabled: " + boardBt));
-	  feedback("Uptime is: "."*testing*");
+	  feedback(("Uptime is: " + uptime + " still testing"));
 	  feedback(("Feedback enabled: " + enableFeedback));
 	  feedback("(c) 2018 Chase Cromwell");
 

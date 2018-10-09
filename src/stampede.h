@@ -16,7 +16,7 @@
 
 class arm {
   public:
-    arm(int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
+    arm(int board, int *pins1, int *pins2, int *pins3, int *pins4, int *pins5, boolean enableFeedbackin = false);
     int i;
 	void setupfingers();
     void fingerattach(int finger1pin, int finger2pin, int finger3pin, int finger4pin, int finger5pin);
@@ -55,6 +55,7 @@ class arm {
     StepperMotor* motor3;
     StepperMotor* motor4;
     StepperMotor* motor5;
+    String uptime = "";
 	String version = "v0.0.0.1";
 	String updated = "1 October 2018";
 	String board = "Teensy 3.5";
