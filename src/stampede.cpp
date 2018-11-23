@@ -247,16 +247,6 @@ void arm::feedback(String messageForArm, int intForArm = 0) {
 }
 
 // Brain of the Signal Loop. Takes separated values and decides what to do with them.
-/*
-This function could be refactored in a number of ways. Using strings and a series of if statements uses a lot of data and likely takes way too much time (oportunity for testing)
-
-It's possible to use a switch and have functions as integers, saving data. The biggest downside to that is decreased readability.
-
-But, all of this is unnececary in the long run if we're really end game focused once we switch to a electroencephalogram based system. My biggest concern is figuring out how to get that much programming power. Switching to a RPi or x64 based system will increase latency and decrease dependability. The biggest problem is finding a way to effectively process that much data in a fast, reliable fashion with low power and heat requirements. (Forgetting cost for the moment)
-
-I need a simple CNN framework for the RasPi Zero. The zero's cost and added wireless functionality make it an ideal candidate. The CNN framework should be front and center for the next year. None of this C#/Arduino code means anything if it is just getting ported to the Pi platform.
-
-*/
 
 void arm::btshowParsedData() {
   messageForArmStr = String(messageForArm);
